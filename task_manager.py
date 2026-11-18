@@ -7,6 +7,8 @@ import json
 from dataclasses import asdict, dataclass
 from pathlib import Path
 
+MAX_TITLE_LENGTH = 100
+
 
 @dataclass
 class Task:
@@ -29,6 +31,12 @@ class TaskManager:
         self._load()
 
     def add_task(self, title: str) -> Task:
+        """Add a task. Raises ValueError if the title is empty or too long."""
+        title = title.strip()
+        if not title:
+            raise ValueError("Task title cannot be empty.")
+        if len(title) > MAX_TITLE_LENGTH:
+            raise ValueError(f"Task title must be at most {MAX_TITLE_LENGTH} characters.")
         task = Task(id=self._next_id, title=title)
         self.tasks.append(task)
         self._next_id += 1
