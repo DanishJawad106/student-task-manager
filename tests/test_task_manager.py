@@ -47,8 +47,10 @@ class TestDeleteTask(unittest.TestCase):
 
     def test_delete_task_removes_only_that_task(self):
         self.assertTrue(self.manager.delete_task(self.first.id))
-        # Deliberately wrong expectation to see the CI run fail (fixed in the next commit).
-        self.assertEqual(len(self.manager.list_tasks()), 2)
+        remaining = self.manager.list_tasks()
+        self.assertEqual(len(remaining), 1)
+        self.assertEqual(remaining[0].id, self.second.id)
+        self.assertIsNone(self.manager.get_task(self.first.id))
 
     def test_delete_unknown_id_returns_false(self):
         self.assertFalse(self.manager.delete_task(99))
