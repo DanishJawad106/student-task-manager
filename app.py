@@ -71,10 +71,16 @@ def handle_delete(manager: TaskManager) -> None:
     task_id = read_task_id("Task number to delete: ")
     if task_id is None:
         return
-    if manager.delete_task(task_id):
-        print(f"Task #{task_id} deleted.")
-    else:
-        print(f"Task #{task_id} not found.")
+    task = manager.get_task(task_id)
+    if task is None:
+        print(f"Task #{task_id} does not exist. Use option 2 to see valid task numbers.")
+        return
+    answer = input(f'Delete "{task.title}"? (y/n): ').strip().lower()
+    if answer != "y":
+        print("Delete cancelled.")
+        return
+    manager.delete_task(task_id)
+    print(f"Task #{task_id} deleted.")
 
 
 def main() -> None:
