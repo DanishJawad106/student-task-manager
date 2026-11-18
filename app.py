@@ -10,6 +10,8 @@ MENU = """
 ===== Student Task Manager =====
 1. Add task
 2. Show tasks
+3. Complete task
+4. Delete task
 0. Exit
 """
 
@@ -30,9 +32,43 @@ def handle_list(manager: TaskManager) -> None:
         print(f"[{mark}] #{task.id} {task.title}")
 
 
+def read_task_id(prompt: str) -> int | None:
+    """Ask for a task id. Returns None if the input is not a positive number."""
+    raw = input(prompt).strip()
+    if not raw.isdigit() or int(raw) == 0:
+        print("Please enter a valid task number, for example 1.")
+        return None
+    return int(raw)
+
+
+def handle_complete(manager: TaskManager) -> None:
+    task_id = read_task_id("Task number to complete: ")
+    if task_id is None:
+        return
+    if manager.complete_task(task_id):
+        print(f"Task #{task_id} marked as completed.")
+    else:
+        print(f"Task #{task_id} not found.")
+
+
+def handle_delete(manager: TaskManager) -> None:
+    task_id = read_task_id("Task number to delete: ")
+    if task_id is None:
+        return
+    if manager.delete_task(task_id):
+        print(f"Task #{task_id} deleted.")
+    else:
+        print(f"Task #{task_id} not found.")
+
+
 def main() -> None:
     manager = TaskManager(STORAGE_FILE)
-    actions = {"1": handle_add, "2": handle_list}
+    actions = {
+        "1": handle_add,
+        "2": handle_list,
+        "3": handle_complete,
+        "4": handle_delete,
+    }
     while True:
         print(MENU)
         choice = input("Choose an option: ").strip()

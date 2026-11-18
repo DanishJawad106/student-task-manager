@@ -38,6 +38,24 @@ class TaskManager:
     def list_tasks(self) -> list[Task]:
         return list(self.tasks)
 
+    def complete_task(self, task_id: int) -> bool:
+        """Mark a task as completed. Returns False if the id does not exist."""
+        for task in self.tasks:
+            if task.id == task_id:
+                task.completed = True
+                self._save()
+                return True
+        return False
+
+    def delete_task(self, task_id: int) -> bool:
+        """Remove a task. Returns False if the id does not exist."""
+        for task in self.tasks:
+            if task.id == task_id:
+                self.tasks.remove(task)
+                self._save()
+                return True
+        return False
+
     def _load(self) -> None:
         if self.storage_path is None or not self.storage_path.exists():
             return
