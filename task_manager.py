@@ -49,12 +49,18 @@ class TaskManager:
 
     def delete_task(self, task_id: int) -> bool:
         """Remove a task. Returns False if the id does not exist."""
+        task = self.get_task(task_id)
+        if task is None:
+            return False
+        self.tasks.remove(task)
+        self._save()
+        return True
+
+    def get_task(self, task_id: int) -> Task | None:
         for task in self.tasks:
             if task.id == task_id:
-                self.tasks.remove(task)
-                self._save()
-                return True
-        return False
+                return task
+        return None
 
     def _load(self) -> None:
         if self.storage_path is None or not self.storage_path.exists():
