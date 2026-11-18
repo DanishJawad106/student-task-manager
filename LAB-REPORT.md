@@ -1,59 +1,34 @@
-# Lab Report: Student Task Manager with Git and GitHub
+# Lab Report
 
-**Name:** Muhammad Danish Jawad
-**Registration No:** FA23-BSE-106
-**Course:** CSC418 DevOps for Cloud Computing, Lab Assignment 4
-**Repository:** https://github.com/DanishJawad106/student-task-manager
-**Release:** https://github.com/DanishJawad106/student-task-manager/releases/tag/v1.0.0
+Muhammad Danish Jawad, FA23-BSE-106
+CSC418 DevOps for Cloud Computing, Lab Assignment 4
 
-## 1. Git vs GitHub, and add / commit / push
+## 1. Difference between Git and GitHub; purpose of add, commit and push
 
-Git is the version control tool that runs on my machine. It records snapshots of the project and keeps the full history locally, with no network needed.
-GitHub is a hosting service built around Git. It stores a copy of the repository online and adds the team features Git does not have: issues, pull requests, code review, Actions and releases.
+Git is the version control tool installed on my computer. It keeps the history of the project locally. GitHub is a website that hosts the repository online and adds things like issues, pull requests and Actions.
 
-- `git add` moves changes into the staging area, so I choose exactly what goes into the next commit.
-- `git commit` saves the staged changes as a snapshot in the local history, with a message saying why.
-- `git push` uploads my local commits to the remote (GitHub) so others can see and pull them.
+- `git add` stages the changes I want in the next commit.
+- `git commit` saves the staged changes in the history with a message.
+- `git push` uploads my commits to GitHub.
 
-## 2. Branches, pull requests, and merge conflicts
+## 2. Why branches and pull requests are used; what causes merge conflicts
 
-A branch is a separate line of work. I built each feature (add-task validation, complete-task, delete-task) on its own branch, so half-finished work never sat on `main` and each feature could be reviewed on its own.
-A pull request asks to merge a branch into `main`. It shows the diff, links the issue it closes, runs CI, and gives a place for review comments before anything lands.
+Branches let me work on a feature without touching main, so main always stays working. A pull request is used to review the changes, link the issue and run the tests before the branch is merged into main.
 
-A merge conflict happens when two branches change the same lines of the same file differently, and Git cannot decide which version is correct. In Part D, `status/development` and `status/testing` both edited the `Project status:` line in README.md. After the first merge, the second one conflicted on that line. I resolved it by writing one line that keeps the meaning of both changes and removing the conflict markers.
+A merge conflict happens when two branches change the same line of a file in different ways. Git cannot decide which version to keep, so it asks you to fix it. In this assignment both status branches changed the "Project status" line in README.md.
 
-## 3. fetch vs pull, merge vs rebase
+## 3. Difference between fetch and pull, and between merge and rebase
 
-- `git fetch` downloads new commits from the remote and updates `origin/main`, but does not touch my working branch. I can inspect what changed first.
-- `git pull` is `fetch` followed by a merge (or rebase) into my current branch, in one step.
+`git fetch` downloads new commits from GitHub but does not change my branch. `git pull` downloads them and merges them into my branch.
 
-- `merge` joins two branches with a merge commit. History stays exactly as it happened, including the fork and join. I used merge commits for every PR, which is why `git log --graph` shows the feature branches.
-- `rebase` replays my commits on top of another branch so history looks linear. It is cleaner to read, but it rewrites commit ids, so it should not be used on branches other people already pulled.
+`merge` joins two branches with a merge commit and keeps the history as it happened. `rebase` moves my commits on top of the other branch so the history is in one straight line, but it changes the commit ids.
 
-## 4. How Issues and Actions help a team
+## 4. How GitHub Issues and Actions help a development team
 
-Issues turn work into a visible list: what needs doing, who is on it, and labels such as `enhancement`, `validation`, `testing` and `documentation`. Writing `Closes #1` in a PR closed the issue automatically on merge, so the issue history links straight to the code that fixed it.
+Issues keep a list of what needs to be done, with labels, and they close automatically when a pull request with "Closes #N" is merged. Actions run the tests automatically on every push and pull request, so a broken change shows up before it is merged.
 
-GitHub Actions runs the tests on every push and pull request to `main`. Nobody has to remember to run them, and a broken change is visible on the PR before it is merged. In this project the first CI run failed on a deliberately wrong assertion, and the red check appeared on PR #9 until the fix commit made it green.
+## 5. One difficulty I faced and how I solved it
 
-## 5. A difficulty and how I solved it
+My laptop has two GitHub accounts logged in, and my global Git email belonged to the other account. I set the username and email only for this repository with `git config` (without `--global`) and switched the GitHub CLI to the correct account with `gh auth switch`.
 
-My laptop is logged in to two GitHub accounts, and my global Git config used the email of my other account. If I had committed with it, every commit would have shown up under the wrong user, and pushes could have used the wrong saved credentials.
-I fixed it per repository instead of changing my global setup: `git config user.name` / `git config user.email` inside this repo only, switched the GitHub CLI to the FA23-BSE-106 account with `gh auth switch`, and set the repo's credential helper to `gh auth git-credential` so pushes use that account.
-
-A second, smaller one: GitHub does not allow approving your own pull request (`Can not approve your own pull request`). Since I am the only contributor, I reviewed each PR with a Comment review plus an inline comment on a changed line, then merged.
-
-## Evidence summary
-
-| Requirement | In this repo |
-|---|---|
-| 12+ meaningful commits | yes, see `git log` |
-| 3 feature branches | `feature/add-task`, `feature/complete-task`, `feature/delete-task` |
-| 4+ issues | #1 to #5 |
-| 5 merged pull requests | #6, #7, #8, #9, #10 |
-| 1 resolved conflict | merge of `status/testing` into `main` |
-| 3+ automated tests | 7 tests in `tests/test_task_manager.py` |
-| 1 workflow | `.github/workflows/tests.yml` |
-| 1 release | v1.0.0 |
-
-Screenshots for every step are in `lab-evidence/`.
+GitHub also does not allow approving your own pull request, so I added comment reviews on the pull requests before merging them.
