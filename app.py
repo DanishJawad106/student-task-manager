@@ -4,6 +4,8 @@ Run with:  python app.py
 """
 from task_manager import TaskManager
 
+STORAGE_FILE = "tasks.json"
+
 MENU = """
 ===== Student Task Manager =====
 1. Add task
@@ -29,7 +31,7 @@ def handle_list(manager: TaskManager) -> None:
 
 
 def main() -> None:
-    manager = TaskManager()
+    manager = TaskManager(STORAGE_FILE)
     actions = {"1": handle_add, "2": handle_list}
     while True:
         print(MENU)
