@@ -1,2 +1,7 @@
 # student-task-manager
-Python console Student Task Manager built with a Git/GitHub workflow (CSC418 Lab Assignment 4)
+
+A small Python console app for students to keep track of coursework tasks: add, list, complete and delete.
+
+Built for CSC418 (DevOps for Cloud Computing), Lab Assignment 4, to practise a full Git and GitHub workflow.
+
+Run it with `python app.py`.
