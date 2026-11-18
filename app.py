@@ -52,7 +52,12 @@ def handle_complete(manager: TaskManager) -> None:
     task_id = read_task_id("Task number to complete: ")
     if task_id is None:
         return
-    if manager.complete_task(task_id):
+    try:
+        found = manager.complete_task(task_id)
+    except ValueError as error:
+        print(error)
+        return
+    if found:
         print(f"Task #{task_id} marked as completed.")
     else:
         print(f"Task #{task_id} not found.")

@@ -42,9 +42,15 @@ class TaskManager:
         return [t for t in self.tasks if not t.completed]
 
     def complete_task(self, task_id: int) -> bool:
-        """Mark a task as completed. Returns False if the id does not exist."""
+        """Mark a task as completed. Returns False if the id does not exist.
+
+        Raises ValueError if the task is already completed, so the user is
+        told instead of the call silently doing nothing.
+        """
         for task in self.tasks:
             if task.id == task_id:
+                if task.completed:
+                    raise ValueError(f"Task #{task_id} is already completed.")
                 task.completed = True
                 self._save()
                 return True
