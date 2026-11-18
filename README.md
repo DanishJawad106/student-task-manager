@@ -1,6 +1,6 @@
 # student-task-manager
 
-Project status: Planning
+Project status: Testing
 
 A small Python console app for students to keep track of coursework tasks: add, list, complete and delete.
 
