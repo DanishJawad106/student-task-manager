@@ -18,7 +18,11 @@ MENU = """
 
 def handle_add(manager: TaskManager) -> None:
     title = input("Task title: ")
-    task = manager.add_task(title)
+    try:
+        task = manager.add_task(title)
+    except ValueError as error:
+        print(f"Could not add task: {error}")
+        return
     print(f"Added task #{task.id}: {task.title}")
 
 
