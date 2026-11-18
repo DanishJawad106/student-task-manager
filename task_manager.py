@@ -38,6 +38,9 @@ class TaskManager:
     def list_tasks(self) -> list[Task]:
         return list(self.tasks)
 
+    def pending_tasks(self) -> list[Task]:
+        return [t for t in self.tasks if not t.completed]
+
     def complete_task(self, task_id: int) -> bool:
         """Mark a task as completed. Returns False if the id does not exist."""
         for task in self.tasks:

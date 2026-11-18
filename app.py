@@ -42,6 +42,13 @@ def read_task_id(prompt: str) -> int | None:
 
 
 def handle_complete(manager: TaskManager) -> None:
+    pending = manager.pending_tasks()
+    if not pending:
+        print("No pending tasks to complete.")
+        return
+    print("Pending tasks:")
+    for task in pending:
+        print(f"  #{task.id} {task.title}")
     task_id = read_task_id("Task number to complete: ")
     if task_id is None:
         return
